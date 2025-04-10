@@ -35,7 +35,7 @@ Entering the five parameters (requested on five separate prompt at startup):
 
 84000 5 500 3 89504 B
 
-(see https://youtu.be/meTtSqal6y8 )
+[![Watch the video](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
 
 This will process about one day of data in 15 minutes on a low-powered device like a Raspibolt.
 
