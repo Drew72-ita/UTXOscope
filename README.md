@@ -13,10 +13,10 @@ By analyzing the frequency and distribution of UTXOs that correspond to typical 
 ## Features
 - No external price feed — fully self-contained analysis using blockchain data.
 - ASCII-based heatmap visualization directly in the terminal.
-- Real-time tracking of new blocks as they are mined.
+- Real-time update as new blocks are mined.
 - Configurable price range and binning for different display resolutions.
 - Optional display of timestamps in Local time, UTC, or the current block height.
-- Automatic price area shifting when price movements exceed the displayed range.
+- Automatic (beta) tracking of price when price movements exceed the displayed range.
 
 ## Usage
 The tool connects to a local Bitcoin Core full node (bitcoin-cli) and scans recent blocks to build a heatmap of UTXO creation sizes.
@@ -31,9 +31,11 @@ To explore price activity starting from April 2nd, 2025:
 
 python3 UTXOscope.py 
 
-Entering the parameters:
+Entering the five parameters (requested on five separate prompt at startup):
 
 84000 5 500 3 89504 B
+
+(see https://youtu.be/meTtSqal6y8 )
 
 This will process about one day of data in 15 minutes on a low-powered device like a Raspibolt.
 
