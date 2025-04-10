@@ -191,9 +191,9 @@ while True:
         block_height = blockinfo["height"]
         time_label = str(block_height)[-4:].rjust(4)
     elif use_utc:
-        time_label = datetime.datetime.utcfromtimestamp(blockinfo["time"]).strftime("%H%M")
+        time_label = datetime.utcfromtimestamp(blockinfo["time"]).strftime("%H%M")
     else:
-        time_label = datetime.datetime.fromtimestamp(blockinfo["time"]).strftime("%H%M")
+        time_label = datetime.fromtimestamp(blockinfo["time"]).strftime("%H%M")
 
     if col_index < graph_cols:
         for r in range(grid_height):
