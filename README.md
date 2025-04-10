@@ -1,5 +1,5 @@
 # UTXOscope
-UTXOscope is a Bitcoin blockchain analysis tool that visualizes price dynamics using only on-chain data.
+UTXOscope is a text-only BTC blockchain analysis tool that visualizes price dynamics using only on-chain data.
 Unlike traditional methods that rely on external exchanges or price feeds, UTXOscope estimates the Bitcoin price trend by analyzing the value distribution of newly created UTXOs (Unspent Transaction Outputs) directly from the blockchain.
 
 The general idea is inspired by UTXOracle by Simple Steve (see https://utxo.live/oracle/). 
