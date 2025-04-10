@@ -21,7 +21,7 @@ By analyzing the frequency and distribution of UTXOs that correspond to typical 
 ## Usage
 The tool connects to a local Bitcoin Core full node (bitcoin-cli) and scans recent blocks to build a heatmap of UTXO creation sizes.
 
-python3 UTXOscope0.py
+python3 UTXOscope.py
 
 Default parameters (hit enter at every request) are tuned for visualizing a price range around $80,000 ± 6% on a standard 80x24 terminal window.
 Alternatively, it is possible to explore historical price dynamics by specifying a starting block and custom parameters.
@@ -29,7 +29,7 @@ Alternatively, it is possible to explore historical price dynamics by specifying
 ## Example
 To explore price activity starting from April 2nd, 2025:
 
-python3 UTXOscope0.py 
+python3 UTXOscope.py 
 
 Entering the parameters:
 
