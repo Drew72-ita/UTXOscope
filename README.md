@@ -8,7 +8,7 @@ The  project runs fully locally using your own Bitcoin Core node and bitcoin-cli
 
 ## Core Idea
 The fundamental assumption behind UTXOscope is that the most common transaction size for retail users is a round-number fiat purchase — typically $100.
-By analyzing the frequency and distribution of UTXOs that correspond to typical purchase amounts (e.g., $100 worth of Bitcoin), it becomes possible to infer the historical price trend and track its movements over time.
+By analyzing the frequency and distribution of UTXOs that correspond to typical purchase amounts (at the moment only $100 worth of Bitcoin), it becomes possible to infer the historical price trend and track its movements over time.
 
 ## Features
 - No external price feed — fully self-contained analysis using blockchain data.
@@ -45,5 +45,5 @@ This will process about one day of data in 15 minutes on a low-powered device li
 
 ## Disclaimer
 This is an experimental tool and a very preliminary release.
-It will fail if Bitcoin Core stops or if unexpected RPC parameters are encountered.
+It will fail if Bitcoin Core stops or if unexpected parameters are entered by the user.
 Use at your own risk.
