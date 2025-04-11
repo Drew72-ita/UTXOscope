@@ -23,7 +23,7 @@ The tool connects to a local Bitcoin Core full node (bitcoin-cli) and scans rece
 
 python3 UTXOscope.py
 
-Default parameters (hit enter at every request) are tuned for visualizing a price range around $80,000 ± 6% on a standard 80x24 terminal window.
+Default parameters (hit enter at every request) are tuned for visualizing a price range around $80,000 ± 6% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen.
 Alternatively, it is possible to explore historical price dynamics by specifying a starting block and custom parameters.
 
 ## Example
