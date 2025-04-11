@@ -45,5 +45,8 @@ This will process about one day of data in 15 minutes on a low-powered device li
 
 ## Disclaimer
 This is an experimental tool and a very preliminary release.
+
 It will fail if Bitcoin Core stops or if unexpected parameters are entered by the user.
-Use at your own risk.
+
+Nothing harmful should happen in any case, this is just a python script calling bitcoin-cli locally and doing some calculations.
+
