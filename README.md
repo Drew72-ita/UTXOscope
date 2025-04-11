@@ -36,6 +36,7 @@ Entering the five parameters (requested on five separate prompt at startup):
 84000 5 500 3 89504 B
 
 [![YouTube 30s demo](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
+
 *(YouTube 30 sec demo with above parameters, click to play)*
 
 This will process about one day of data in 15 minutes on bitcoin core setups like Raspibolt (fig. 01)
