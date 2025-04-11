@@ -27,7 +27,7 @@ Default parameters (hit enter at every request) are tuned for visualizing a pric
 Alternatively, it is possible to explore historical price dynamics by specifying a starting block and custom parameters.
 
 ## Example
-To explore price activity starting from April 2nd, 2025:
+To explore price activity on a 80x24 terminal starting from April 2nd, 2025:
 
 python3 UTXOscope.py 
 
