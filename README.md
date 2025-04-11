@@ -39,6 +39,8 @@ Entering the five parameters (requested on five separate prompt at startup):
 
 This will process about one day of data in 15 minutes on a low-powered device like a Raspibolt.
 
+![Description of image](fig01.jpg)
+
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
 - Python 3.x.
