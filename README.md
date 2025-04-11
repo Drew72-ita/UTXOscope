@@ -13,7 +13,7 @@ By analyzing the frequency and distribution of UTXOs that correspond to typical 
 ## Features
 - No external price feed — fully self-contained analysis using blockchain data.
 - ASCII-based heatmap visualization directly in the terminal.
-- Real-time update as new blocks are mined.
+- Real-time update as new blocks are mined, can start N blocks in the past to fill the screen.
 - Configurable price range and binning for different display resolutions.
 - Optional display of timestamps in Local time, UTC, or the current block height.
 - Automatic (beta) tracking of price when price movements exceed the displayed range.
