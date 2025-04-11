@@ -43,7 +43,7 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig01.jpg)
 
-**Fig.01:** *Example of output running on a Raspibolt + output on a 7' 100x30 LCD. In this example, the weaker trend line above the main signal is probably coming from sales of OC sats for \$100, including 7-8% total fees (seller+service+miner), thus buying less sats for the buck and projecting a 7-8% higher BTC price.*
+**Fig.01:** *Example of output running on a Raspibolt + output on a 7' HDMI LCD (100x30 chars). In this example, the weaker trend line above the main signal is probably coming from sales of OC sats for \$100, including 7-8% total fees (seller+service+miner), thus buying less sats for the buck and projecting a 7-8% higher BTC price.*
 
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
