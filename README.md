@@ -35,11 +35,13 @@ Entering the five parameters (requested on five separate prompt at startup):
 
 84000 5 500 3 89504 B
 
-[![Watch the video](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
+[![YouTube 30s demo](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
 
-This will process about one day of data in 15 minutes on bitcoin core setups like Raspibolt.
+This will process about one day of data in 15 minutes on bitcoin core setups like Raspibolt (fig. 01)
 
-![Description of image](fig01.jpg)
+![Example of output running on a Raspibolt + output on 7' HDMI LCD](fig01.jpg)
+
+**Fig.01:** *In the image below the weaker trend line above the main signal is probably coming from sales of OC sats for \$100, including 7-8% total fees (seller+service+miner), thus projecting a 7-8% higher BTC price.*
 
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
