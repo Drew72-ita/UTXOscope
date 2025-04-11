@@ -37,7 +37,7 @@ Entering the five parameters (requested on five separate prompt at startup):
 
 [![Watch the video](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
 
-This will process about one day of data in 15 minutes on a low-powered device like a Raspibolt.
+This will process about one day of data in 15 minutes on bitcoin core setups like Raspibolt.
 
 ![Description of image](fig01.jpg)
 
