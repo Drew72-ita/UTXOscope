@@ -39,7 +39,9 @@ Entering the five parameters (requested on five separate prompt at startup):
 
 *(YouTube 30 sec demo with above parameters, click to play)*
 
-This will process about one day of data in 15 minutes on bitcoin core setups like Raspibolt (fig. 01 for a "cloudy" day, fig 02  for clearer skyes)
+This will process about one day of data in 15 minutes on bitcoin core setups like Raspibolt
+
+(fig. 01 for a "cloudy" day, fig 02  for clearer skyes)
 
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig01b.jpg)
 
