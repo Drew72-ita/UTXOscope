@@ -38,7 +38,7 @@ python3 UTXOscope.py
 
 Entering the six parameters (requested on five separate prompts at startup):
 
-84000 5 500 3 89504 B
+84000 5 500 3 890504 B
 
 [![YouTube 30s demo](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
 
