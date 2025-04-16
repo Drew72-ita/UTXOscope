@@ -26,12 +26,12 @@ python3 UTXOscope.py
 Default parameters (hit enter at every request) are tuned for visualizing a price range around $80,000 ± 6% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen.
 Alternatively, it is possible to explore historical price dynamics by specifying a starting block and custom parameters.
 
-## Example
+## Examples
 To explore price activity on a 80x24 terminal starting from April 2nd, 2025:
 
 python3 UTXOscope.py 
 
-Entering the five parameters (requested on five separate prompt at startup):
+Entering the six parameters (requested on five separate prompt at startup):
 
 84000 5 500 3 89504 B
 
@@ -50,6 +50,10 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig02.jpg)
 
 **Fig.02:** *90 blocks later, a sharper and cleaner profile: it depends on the day and the type of transactions / UTXOs.*
+
+![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig03.jpg)
+
+**Fig.03:** *The viable maximum vertical resolution is 250$ dollars (third parameter), this example was launched on a 7' HDMI LCD (100x30 chars) with parameters, you have to try the +/-% range (second parameter) to fill the screen.*
 
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
