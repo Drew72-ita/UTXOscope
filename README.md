@@ -36,7 +36,7 @@ To explore price activity on a 80x24 terminal starting from April 2nd, 2025:
 
 python3 UTXOscope.py 
 
-Entering the six parameters (requested on five separate prompt at startup):
+Entering the six parameters (requested on five separate prompts at startup):
 
 84000 5 500 3 89504 B
 
