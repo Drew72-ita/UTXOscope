@@ -23,8 +23,15 @@ The tool connects to a local Bitcoin Core full node (bitcoin-cli) and scans rece
 
 python3 UTXOscope.py
 
-Default parameters (hit enter at every request) are tuned for visualizing a price range around $80,000 ± 6% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen.
+Six parameters will be asked to the user, prompts should be self-explanatory.
+
+Default parameters (hit enter at every request) are tuned for visualizing a price range around $80,000 ± 6% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen. If you are using standard parameters, check that the first is at least compatible with current price, so with BTC real price of 90.000$ standard parameters will not work, try 90.000 ± 6%.
+
 Alternatively, it is possible to explore historical price dynamics by specifying a starting block and custom parameters.
+
+No auto-regulation to fill the screen, so you have to experiment at the moment, sorry. The program will exit if too few lines are available on current terminal for the set of parameters entered, stating how many would be needed to fullfill the set of parameters.
+
+It is easier than it sounds, just try, experiment and exit with control+C.
 
 ## Examples
 To explore price activity on a 80x24 terminal starting from April 2nd, 2025:
@@ -53,7 +60,7 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig03.jpg)
 
-**Fig.03:** *The viable maximum vertical resolution is 250$ dollars (third parameter), this example was launched on a 7' HDMI LCD (100x30 chars) with parameters, you have to try the +/-% range (second parameter) to fill the screen.*
+**Fig.03:** *The viable maximum vertical resolution is 250$ dollars (third parameter), this example was launched on a 7' HDMI LCD (100x30 chars) with parameters, you have to try the +/-% range (second parameter) to fill the screen. In this case the x axis is labeled with local time in hours.*
 
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
