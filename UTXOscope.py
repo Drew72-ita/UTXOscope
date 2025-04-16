@@ -2,7 +2,7 @@
 # UTXOscope - general idea from UTXOracle
 # (see https://utxo.live/oracle/)
 # Author: Drew72-ita
-# Version: 0.41-RC1
+# Version: 0.411-RC1
 # ======================================================================
 # This is a very preliminary release.
 # Will run on a Bitcoin Core installation using bitcoin-cli.
@@ -155,10 +155,10 @@ def render_ascii_graph():
     last_median_bin = median_bin  
 
     # Decide if it is necessary to move graph up/down to track price
-    threshold = grid_height // 3  #it's time to move area is upper or lower 1/3 of the graph
-    if median_bin <= threshold:
+    threshold = grid_height // 3  
+    if median_bin < threshold:
         move_graph = -1
-    elif median_bin >= (grid_height - 1 - threshold):
+    elif median_bin >= grid_height - threshold:
         move_graph = 1
     else:
         move_graph = 0
