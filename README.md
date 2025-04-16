@@ -25,7 +25,7 @@ python3 UTXOscope.py
 
 Six parameters will be asked to the user, prompts should be self-explanatory.
 
-Default parameters (hit enter at every request) are tuned for visualizing a price range around \$84,000 ± 3% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen. If you are using standard parameters, check that the first is at least compatible with current price, so with BTC real price of \$90.000 standard parameters will not work, try 90.000 ± 3%.
+Default parameters (hit enter at every request) are tuned for visualizing a price range around \$84,000 ± 3% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen. If you are using standard parameters, check that the first is at least compatible with current price, so with BTC real price of \$100.000 standard parameters will not work, try 100.000 ± 3%.
 
 If too few lines are available on the terminal, the program will progressively recuce the percent range. 
 
