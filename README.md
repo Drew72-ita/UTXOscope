@@ -50,15 +50,19 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig01b.jpg)
 
-**Fig.01:** *Example of output running on a Raspibolt + output on a 7' HDMI LCD (100x30 chars). In this example, the weaker trend line above the main signal is probably coming from sales of OC sats for \$100, including 7-8% total fees (seller+service+miner), thus buying less sats for the buck and projecting a 7-8% higher BTC price. Vertical lines correspond with odd blocks containing mostly data/payload transactions. Update: this singnal should be less visible from v.0.4.1 *
+**Fig.01:** *Example of output running on a Raspibolt + output on a 7' HDMI LCD (100x30 chars). In this example, the weaker trend line above the main signal is probably coming from sales of OC sats for \$100, including 7-8% total fees (seller+service+miner), thus buying less sats for the buck and projecting a 7-8% higher BTC price. Vertical lines correspond with odd blocks containing mostly data/payload transactions (made with v.0.4.0). Update: this singnal 7-8% price + fee signal should be less visible from v.0.4.1 *
 
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig02.jpg)
 
-**Fig.02:** *90 blocks later, a sharper and cleaner profile: it depends on the day and the type of transactions / UTXOs.*
+**Fig.02:** *90 blocks later, a sharper and cleaner profile: it depends on the day and the type of transactions / UTXOs (made with v.0.4.0).*
 
 ![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig03.jpg)
 
-**Fig.03:** *The most informative y-axis resolution is 250$ dollars (third parameter), this example was launched on a 7' HDMI LCD (100x30 chars), but the tracking could get lost if the price changes more than +/-3% in 2-3 blocks. In this case the x axis is labeled with local time in hours.*
+**Fig.03:** *The most informative y-axis resolution is 250$ dollars (third parameter), this example was launched on a 7' HDMI LCD (100x30 chars), but the tracking could get lost if the price changes more than +/-3% in 2-3 blocks. In this case the x axis is labeled with local time in hours. (made with v.0.4.0).*
+
+![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig04.jpg)
+
+**Fig.04:** *Similar to fig.03, but some time later and with a clearer signal (made with v.0.4.1 using signal lower/higher harmonics from $200 and $50 purchases).*
 
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
