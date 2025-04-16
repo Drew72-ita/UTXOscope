@@ -2,7 +2,7 @@
 # UTXOscope - general idea from UTXOracle
 # (see https://utxo.live/oracle/)
 # Author: Drew72-ita
-# Version: 0.4-RC1
+# Version: 0.41-RC1
 # ======================================================================
 # This is a very preliminary release.
 # Will run on a Bitcoin Core installation using bitcoin-cli.
@@ -30,11 +30,11 @@ from datetime import datetime, timezone
 cols, rows = shutil.get_terminal_size()
 cols -= 1  # force one-column margin to avoid overflow
 
-# === Prompt user for starting parameters ===
+# === BEGIN Prompt user for starting parameters ===
 try:
-    prezzo_usd = float(input("Indicative BTC/USD price [default 80000]: ") or "80000")
-    percent_range = float(input("+/- range to explore as percentage [default 6 for 80x24 std console]: ") or "6")
-    bin_width_usd = float(input("Bin width in $ [default 500 - usually best results]: ") or "500")
+    price_usd = float(input("Indicative BTC/USD price [default 84000]: ") or "84000")
+    percent_range = float(input("+/- range to explore as percentage [default 3 for 80x24 std console]: ") or "3")
+    bin_width_usd = float(input("Bin width in $ [default 250 - usually best results]: ") or "250")
     block_count = int(input("Number of consecutive blocks to analize [default 3 and should stay 3]: ") or "3")
     start_offset = int(input("Start from N blocks ago (≤1000) or block height (>1000) [default 70]: ") or "70")
     if start_offset <= 0:
@@ -50,45 +50,49 @@ try:
 except ValueError:
     print("Invalid input. Exiting.")
     exit(1)
+# === END Prompt user for starting parameters ===
 
+# === BEGIN perform initial one-time only calculations with provided parameters ===
 usd_purchase = 100
-raw_min_price = prezzo_usd * (1 - percent_range / 100)
-raw_max_price = prezzo_usd * (1 + percent_range / 100)
-min_price = math.floor(raw_min_price / 1000) * 1000
-max_price = math.ceil(raw_max_price / 1000) * 1000
-
-price_bins = list(range(int(min_price), int(max_price) + 1, int(bin_width_usd)))
-satoshi_bins = [int((usd_purchase * 100_000_000) / p) for p in price_bins]
-price_bins = price_bins[:-1]
-satoshi_bins = satoshi_bins[:-1]
-
 reserved_rows = 5
-grid_height = len(satoshi_bins) - 1
-#mod for moving average of median bin: initialize smoothed_median_bin at the middle value
-smoothed_median_bin = grid_height // 2
 move_graph = 0
-usable_rows = rows - reserved_rows
-if usable_rows < grid_height:
-    print(f"To few rows in the terminal: needs at least {grid_height + reserved_rows} rows, found {rows} .")
-    print(f"--> reduce +/- range to explore (this is the second parameter)")
-    exit(1)
+
+while True: # some calcs. and progr. reduction of percent_range if there are to few rows in the terminal
+    raw_min_price = price_usd * (1 - percent_range / 100)
+    raw_max_price = price_usd * (1 + percent_range / 100)
+    min_price = math.floor(raw_min_price / bin_width_usd) * bin_width_usd
+    max_price = math.floor(raw_max_price / bin_width_usd) * bin_width_usd
+    price_bins = list(range(int(min_price), int(max_price) + 1, int(bin_width_usd)))
+    satoshi_bins = [int((usd_purchase * 100_000_000) / p) for p in price_bins]
+    price_bins = price_bins[:-1]
+    satoshi_bins = satoshi_bins[:-1]
+    grid_height = len(satoshi_bins) - 1
+    smoothed_median_bin = grid_height // 2  #initialize smoothed_median_bin at the middle value
+    usable_rows = rows - reserved_rows
+    if usable_rows >= grid_height:
+        break
+    print(f"Too few rows available, reducing percent_range to {percent_range - 0.1:.1f}")
+    time.sleep(0.25)
+    percent_range -= 0.1
 
 graph_cols = cols - 7
 ascii_grid = [[" " for _ in range(graph_cols)] for _ in range(grid_height)]
 x_labels = ["    " for _ in range(graph_cols)]
 col_index = 0
+# === END perform initial one-time only calculations with provided parameters ===
 
+# === BEGIN function definitions ===
 def bitcoin_cli(*args):
     cmd = ['bitcoin-cli'] + list(args)
     result = subprocess.run(cmd, capture_output=True, text=True)
     return result.stdout.strip()
 
 def ascii_bar(percent):
-    if   percent >= 97: return '█' # the percent thresholds
-    elif percent >= 75: return '▓' # are only relevant for a nice
-    elif percent >= 53: return '▒' # brightness/contrast of the
-    elif percent >= 31: return '░' # heatmap, all in all they work as
-    elif percent >= 10: return '·' # brightnesss/contrast adjustments
+    if   percent >= 97: return '█'  # the percent thresholds
+    elif percent >= 75: return '▓'  # are only relevant for a nice
+    elif percent >= 53: return '▒'  # brightness/contrast of the
+    elif percent >= 31: return '░'  # heatmap, all in all they work as
+    elif percent >= 10: return '·'  # brightnesss/contrast adjustments
     else: return ' '
 
 def get_bin_counts(block_hash):
@@ -101,7 +105,17 @@ def get_bin_counts(block_hash):
                 spk_type = vout.get('scriptPubKey', {}).get('type', '')
                 if spk_type in ['nulldata', 'nonstandard']:
                     continue
-                sats = int(vout['value'] * 1e8)
+                sats = int(vout['value'] * 1e8)         #<--- case of $ 100 purchases (main signal)
+                for i in range(grid_height):
+                    if satoshi_bins[i+1] <= sats < satoshi_bins[i]:
+                        bin_counts[i] += 1
+                        break
+                sats = int(vout['value'] * 1e8 * 2)     #<--- case of $ 50 purchases (lower harmonic)
+                for i in range(grid_height):
+                    if satoshi_bins[i+1] <= sats < satoshi_bins[i]:
+                        bin_counts[i] += 1
+                        break
+                sats = int(vout['value'] * 1e8 // 2)    #<--- case of $ 200 purchases (higher harmonic)
                 for i in range(grid_height):
                     if satoshi_bins[i+1] <= sats < satoshi_bins[i]:
                         bin_counts[i] += 1
@@ -121,7 +135,7 @@ def render_ascii_graph():
         char = ascii_grid[r][col_index - 1]
         if char == '█': w = 1.0    # weights are relevant
         elif char == '▓': w = 0.75 # to tweak median bin calc
-        elif char == '▒': w = 0.5
+        elif char == '▒': w = 0.5  
         elif char == '░': w = 0.1
         else: w = 0.0  
         weights.append(w)
@@ -163,21 +177,24 @@ def render_ascii_graph():
         label = f"{price_bins[r]:5d}{arrow_or_dollar} "  # <- a space is added at the end
         print(label + "".join(ascii_grid[r]))
 
-    # Timestamp in basso
+    # x axis
     for i in range(4):
         print("       ", end="")
         for c in range(graph_cols):
             print(x_labels[c][i] if i < len(x_labels[c]) else " ", end="")
         print()
+# === END function definitions ===
 
-# === Main loop ===
+# === BEGIN one-time only part that needs functions ===
 current_height = int(bitcoin_cli("getblockcount"))
 if start_offset > 1000:
     target_height = start_offset
 else:
     target_height = current_height - start_offset + 1
 last_block = bitcoin_cli("getblockhash", str(target_height))
+# === END one-time only part that needs functions ===
 
+# === BEGIN Main loop ===
 while True:
     bin_counts = get_bin_counts(last_block)
     max_count = max(bin_counts) if any(bin_counts) else 1
@@ -209,7 +226,7 @@ while True:
     render_ascii_graph()
 
     if move_graph != 0:
-        shift_bins = (grid_height // 4) * move_graph # this is very relevant: correct 1/4 (not 1/3) of the screen
+        shift_bins = (grid_height // 4) * move_graph # this is very relevant: shift 1/4 (not 1/3) of the screen
         shift = abs(shift_bins)
 
         # update price range
@@ -222,7 +239,7 @@ while True:
         price_bins = price_bins[:-1]
         satoshi_bins = satoshi_bins[:-1]
 
-        # shift graph if needed
+        # shift graph up or down
         if move_graph == 1:
             new_grid = ascii_grid[shift:]
             ascii_grid = new_grid + [[" " for _ in range(graph_cols)] for _ in range(grid_height - len(new_grid))]
@@ -242,3 +259,4 @@ while True:
             if new_block != last_block:
                 last_block = new_block
                 break
+# === END Main loop ===
