@@ -9,4 +9,5 @@
 - Optional color scheme for heatmap display, differentiating UTXO type (data, single TX with change, all the others)
 - When the x-axis is labeled with block heights, only 4 out of 6 digits are currently shown — find a way to handle blocks with 6+ digits.
 - Label the x-axis in the available space in the lower left corner to indicate whether we are using local time, UTC, or block numbers (this might also solve the previous issue).
+- Toggle the x-axis labels, and perhaps add a fourth label type that displays the number of transactions used to construct a specific heatmap column.
 - Handle the case where two or more blocks are added during the 10-second idle wait (real-time mode).
