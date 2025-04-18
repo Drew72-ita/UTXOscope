@@ -64,6 +64,11 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 
 **Fig.04:** *Similar to fig.03, but some time later and with a clearer signal (made with v.0.4.1 using signal lower/higher harmonics from \$200 and \$50 purchases).*
 
+![Testing different price resolutions on a 100x30 tmux session](fig05.jpg)
+
+**Fig.05:** *Testing different price range resolutions: higher res are more informative, but probably the auto-tracking logic will fail more easily in case of rapid price change (made with v.0.4.1.* on a raspibolt, three tmux sessions on 100x30 chars terminals)
+
+
 ## Requirements
 - Bitcoin Core full node with RPC access (bitcoin-cli).
 - Python 3.x.
