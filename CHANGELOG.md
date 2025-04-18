@@ -10,5 +10,4 @@
 - Standard parameters are now 84000 3 250 3 70 L
 
 ## [0.4.0] - 2025-04-10
-### Added
 - Initial public release on GitHub
