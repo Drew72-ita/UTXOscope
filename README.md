@@ -73,6 +73,14 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 - Bitcoin Core full node with RPC access (bitcoin-cli).
 - Python 3.x.
 
+## Tips / buy me a coffee ^_^
+**Bolt12 LN** 
+
+lno1zrxq8pjw7qjlm68mtp7e3yvxee4y5xrgjhhyf2fxhlphpckrvevh50u0q29vqjjqgyu80agddjw9xwup56yka8t9hzq8audxmks66zepgqga7qsr9jmvaqlf7efa89v8tjvn5tcsfvxmz5cspdjglqv93lw97e8je6dsqvljglw2m5jg0tsmxwjj2mwgp7aprm5k5xuttf5pwxghh0qtrx28g8lqmq7yd28ysp9k7x4x5j4r8wqaa6sjqwwx3m68mszkfruas09hwpm23t4yr9pevaqa8022ps705p9jtndawqqsp8h4gukup8ejnsz7fcwr6tn8y5
+
+**Wallet of Satoshi** : drew (at) walletofsatoshi.com
+
+
 ## Disclaimer
 This is an experimental tool and a very preliminary release.
 
