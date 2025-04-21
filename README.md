@@ -48,23 +48,23 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 
 (fig. 01 for a "cloudy" day, fig 02  for clearer skyes)
 
-![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig01b.jpg)
+![Example of output running on a Raspibolt + output on a 7' HDMI LCD](images/fig01b.jpg)
 
 **Fig.01:** *Example of output running on a Raspibolt + output on a 7' HDMI LCD (100x30 chars). In this example, the weaker trend line above the main signal is probably coming from sales of OC sats for \$100, including 7-8% total fees (seller+service+miner), thus buying less sats for the buck and projecting a 7-8% higher BTC price. Vertical lines correspond with odd blocks containing mostly data/payload transactions (made with v.0.4.0). Update: this singnal 7-8% price + fee signal should be less visible from v.0.4.1 *
 
-![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig02.jpg)
+![Example of output running on a Raspibolt + output on a 7' HDMI LCD](images/fig02.jpg)
 
 **Fig.02:** *90 blocks later, a sharper and cleaner profile: it depends on the day and the type of transactions / UTXOs (made with v.0.4.0).*
 
-![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig03.jpg)
+![Example of output running on a Raspibolt + output on a 7' HDMI LCD](images/fig03.jpg)
 
 **Fig.03:** *The most informative y-axis resolution is 250$ dollars (third parameter), this example was launched on a 7' HDMI LCD (100x30 chars), but the tracking could get lost if the price changes more than +/-3% in 2-3 blocks. In this case the x axis is labeled with local time in hours. (made with v.0.4.0).*
 
-![Example of output running on a Raspibolt + output on a 7' HDMI LCD](fig04.jpg)
+![Example of output running on a Raspibolt + output on a 7' HDMI LCD](images/fig04.jpg)
 
 **Fig.04:** *Similar to fig.03, but some time later and with a clearer signal (made with v.0.4.1 using signal lower/higher harmonics from \$200 and \$50 purchases).*
 
-![Testing different price resolutions on a 100x30 tmux session](fig05.jpg)
+![Testing different price resolutions on a 100x30 tmux session](images/fig05.jpg)
 
 **Fig.05:** *Testing different price range resolutions: higher res are more informative, but probably the auto-tracking logic will fail more easily in case of rapid price change (made with v.0.4.1.* on a raspibolt, three tmux sessions on 100x30 chars terminals)
 
@@ -77,6 +77,8 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 **Bolt12 LN** 
 
 lno1zrxq8pjw7qjlm68mtp7e3yvxee4y5xrgjhhyf2fxhlphpckrvevh50u0q29vqjjqgyu80agddjw9xwup56yka8t9hzq8audxmks66zepgqga7qsr9jmvaqlf7efa89v8tjvn5tcsfvxmz5cspdjglqv93lw97e8je6dsqvljglw2m5jg0tsmxwjj2mwgp7aprm5k5xuttf5pwxghh0qtrx28g8lqmq7yd28ysp9k7x4x5j4r8wqaa6sjqwwx3m68mszkfruas09hwpm23t4yr9pevaqa8022ps705p9jtndawqqsp8h4gukup8ejnsz7fcwr6tn8y5
+
+![Bolt 12 QR code](images/bolt12.jpeg)
 
 **Wallet of Satoshi** : drew (at) walletofsatoshi.com
 
