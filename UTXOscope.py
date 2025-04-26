@@ -2,7 +2,7 @@
 # UTXOscope - general idea from UTXOracle
 # (see https://utxo.live/oracle/)
 # Author: Drew72-ita
-# Version: 0.411-RC1
+# Version: 0.412-RC1
 # ======================================================================
 # This is a very preliminary release.
 # Will run on a Bitcoin Core installation using bitcoin-cli.
