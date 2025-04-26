@@ -6,6 +6,11 @@ The general idea is inspired by UTXOracle by Simple Steve (see https://utxo.live
 
 The  project runs fully locally using your own Bitcoin Core node and bitcoin-cli.
 
+![quicklook](images/fig01a.gif)
+
+<small><i>Eye-catching animated GIF, move along (accelerated run made with v.0.4.2)</i></small>
+
+
 ## Core Idea
 The fundamental assumption behind UTXOscope is that the most common transaction size for retail users is a round-number fiat purchase — typically $100.
 By analyzing the frequency and distribution of UTXOs that correspond to the most typical purchase amounts (\$100, \$50 and \$200), it becomes possible to infer the historical price trend and track its movements over time.
@@ -78,7 +83,7 @@ This will process about one day of data in 15 minutes on bitcoin core setups lik
 
 lno1zrxq8pjw7qjlm68mtp7e3yvxee4y5xrgjhhyf2fxhlphpckrvevh50u0q29vqjjqgyu80agddjw9xwup56yka8t9hzq8audxmks66zepgqga7qsr9jmvaqlf7efa89v8tjvn5tcsfvxmz5cspdjglqv93lw97e8je6dsqvljglw2m5jg0tsmxwjj2mwgp7aprm5k5xuttf5pwxghh0qtrx28g8lqmq7yd28ysp9k7x4x5j4r8wqaa6sjqwwx3m68mszkfruas09hwpm23t4yr9pevaqa8022ps705p9jtndawqqsp8h4gukup8ejnsz7fcwr6tn8y5
 
-![Bolt 12 QR code](images/bolt12.jpeg)
+<img src="images/bolt12.jpeg" alt="Bolt 12 QR code" width="200">
 
 **Wallet of Satoshi** : drew (at) walletofsatoshi.com
 
