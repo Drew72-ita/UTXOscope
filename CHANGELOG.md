@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.4.1.2] - 2025-04-26
+- Update to README.md + moving images in images folder, no change to python code
+- This is a cleanup in preparation for upcoming 0.4.2 release
+
 ## [0.4.1.1] - 2025-04-16
 - small fix to tracking logic tresholds
 
