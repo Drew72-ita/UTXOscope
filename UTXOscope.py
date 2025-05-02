@@ -1,21 +1,7 @@
 # ======================================================================
-# UTXOscope - general idea from UTXOracle
-# (see https://utxo.live/oracle/)
-# Author: Drew72-ita
-# Version: 0.412-RC1
-# ======================================================================
-# This is a very preliminary release.
-# Will run on a Bitcoin Core installation using bitcoin-cli.
-# It will fail with unexpected parameters or if Bitcoin core stops.
-#
-# You have to provide a price range.
-# Standard parameters are ok for current price 80.000$ +/- 6%.
-# on a standard 80x24 console screen: it will fill the graph with last
-# 70 blocks and go into realtime, checking for new blocks every 10s.
-#
-# Or you can try the price dynamics from 2nd Apr 2025 with:
-# 84000,5,500,3,89504,B     ( see https://youtu.be/meTtSqal6y8 )
-# It will process one day of data in 15 mins on a raspibolt.
+# UTXOscope (general idea from UTXOracle, https://utxo.live/oracle/)
+# Author: Drew72-ita https://github.com/Drew72-ita/UTXOscope
+# Version: 0.420-RC3 - read README.md and CHANGELOG.md
 # ======================================================================
 
 import subprocess
@@ -27,15 +13,48 @@ import os
 import sys
 from datetime import datetime, timezone
 
+version = "v0.4.2.0"
 cols, rows = shutil.get_terminal_size()
 cols -= 1  # force one-column margin to avoid overflow
 
+# === BEGIN parsing of command line parameters ===  # 0.4.2
+isLogging = False                                   # 0.4.2
+if len(sys.argv) == 2:                              # 0.4.2
+    if sys.argv[1].lower() == "log":                # 0.4.2
+        isLogging = True                            # 0.4.2
+    else:                                           # 0.4.2
+        print("Usage: python3 UTXOscope.py [log]")  # 0.4.2
+        sys.exit(1)                                 # 0.4.2
+elif len(sys.argv) > 2:                             # 0.4.2
+    print("Usage: python3 UTXOscope.py [log]")      # 0.4.2
+    sys.exit(1)                                     # 0.4.2
+# === END of parsing of command line parameters === # 0.4.2
+
 # === BEGIN Prompt user for starting parameters ===
+os.system('cls' if os.name == 'nt' else 'clear')
+print(f"UTXOscope {version}")
+print()
+print("Now You will be prompted for a few parameters.")
+print()
+print("The initial parameter (estimate of current BTC price) is crucial for")
+print("correct price tracking in the future; the others can stay at default values")
+print("for std 80x24 text console, for larger screens, increase range to 4, 5, ...")
+print()
+
 try:
-    price_usd = float(input("Indicative BTC/USD price [default 84000]: ") or "84000")
-    percent_range = float(input("+/- range to explore as percentage [default 3 for 80x24 std console]: ") or "3")
+    price_usd = float(input("Indicative BTC/USD price [default 95000]: ") or "95000")
+    percent_range = float(input("+/- range to explore as percentage [default 3, min 1, max 10]: ") or "3")
+    if percent_range < 1:
+        percent_range = 1
+    elif percent_range > 10:
+        percent_range = 10
     bin_width_usd = float(input("Bin width in $ [default 250 - usually best results]: ") or "250")
-    block_count = int(input("Number of consecutive blocks to analize [default 3 and should stay 3]: ") or "3")
+    bin_width_usd = int(round(bin_width_usd / 5) * 5)
+    block_count = int(input("Number of consecutive blocks to analize [default 3, min 1, max 10]: ") or "3")
+    if block_count < 1:
+        block_count = 1
+    elif block_count > 10:
+        block_count = 10
     start_offset = int(input("Start from N blocks ago (≤1000) or block height (>1000) [default 70]: ") or "70")
     if start_offset <= 0:
         start_offset = 1
@@ -75,10 +94,15 @@ while True: # some calcs. and progr. reduction of percent_range if there are to 
     time.sleep(0.25)
     percent_range -= 0.1
 
-graph_cols = cols - 7
+graph_cols = cols - 8 #0.4.2 7->8 now y axis labels are 1 char longer 
 ascii_grid = [[" " for _ in range(graph_cols)] for _ in range(grid_height)]
 x_labels = ["    " for _ in range(graph_cols)]
 col_index = 0
+
+if isLogging:                                           # 0.4.2    
+    timestamp = datetime.now().strftime("%y%m%d%H%M%S") # 0.4.2
+    logfile = open(f"log_{timestamp}.txt", "w")         # 0.4.2
+
 # === END perform initial one-time only calculations with provided parameters ===
 
 # === BEGIN function definitions ===
@@ -105,29 +129,26 @@ def get_bin_counts(block_hash):
                 spk_type = vout.get('scriptPubKey', {}).get('type', '')
                 if spk_type in ['nulldata', 'nonstandard']:
                     continue
-                sats = int(vout['value'] * 1e8)         #<--- case of $ 100 purchases (main signal)
-                for i in range(grid_height):
-                    if satoshi_bins[i+1] <= sats < satoshi_bins[i]:
-                        bin_counts[i] += 1
-                        break
-                sats = int(vout['value'] * 1e8 * 2)     #<--- case of $ 50 purchases (lower harmonic)
-                for i in range(grid_height):
-                    if satoshi_bins[i+1] <= sats < satoshi_bins[i]:
-                        bin_counts[i] += 1
-                        break
-                sats = int(vout['value'] * 1e8 // 2)    #<--- case of $ 200 purchases (higher harmonic)
-                for i in range(grid_height):
-                    if satoshi_bins[i+1] <= sats < satoshi_bins[i]:
-                        bin_counts[i] += 1
-                        break
+                sats = int(vout['value'] * 1e8)
+                if sats % 1000 != 0:            # 0.4.2 exclude whole-satoshi humanly "rounded" values (0,1% of population)
+                    for i in range(grid_height):
+                        if satoshi_bins[i+1] <= sats < satoshi_bins[i]: # case of $100 purchases (main signal)
+                            bin_counts[i] += 1
+                            break
+                        elif satoshi_bins[i+1] <= sats*2 < satoshi_bins[i]: # case of $50 purchases (lower harmonic)
+                            bin_counts[i] += 1
+                            break
+                        elif satoshi_bins[i+1] <= sats//2 < satoshi_bins[i]: # # case of 200 purchases (higher harmonic)
+                            bin_counts[i] += 1
+                            break
         if 'previousblockhash' in block:
             current_hash = block['previousblockhash']
         else:
             break
     return bin_counts
 
-def render_ascii_graph():
-    os.system("clear")
+def render_ascii_graph(blockinfo):      #0.4.2 from def render_ascii_graph():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
     # Calculate median bin as weighted average of map
     weights = []
@@ -150,7 +171,7 @@ def render_ascii_graph():
     global last_median_bin
     global smoothed_median_bin
     global move_graph
-    smoothed_median_bin = 0.65 * smoothed_median_bin + 0.35 *  median_bin 
+    smoothed_median_bin = 0.65 * smoothed_median_bin + 0.35 *  median_bin # from 0.65+0.35 
     median_bin = int(round(smoothed_median_bin))
     last_median_bin = median_bin  
 
@@ -171,18 +192,32 @@ def render_ascii_graph():
     else:
         direction_char = ">"
 
+    if isLogging:                                                                                                                                   #0.4.2
+        print(f"--- block {blockinfo['height']} [{datetime.utcfromtimestamp(blockinfo['time']).strftime('%Y-%m-%d %H:%M:%S')}] UTC", file=logfile)  #0.4.2
+
     # y axis label with dollar or median bin marker
     for r in reversed(range(grid_height)):
         arrow_or_dollar = direction_char if r == median_bin else "$"
-        label = f"{price_bins[r]:5d}{arrow_or_dollar} "  # <- a space is added at the end
+        label = f"{price_bins[r]:>6}{arrow_or_dollar} " # 0.4.2 support up to 999900$ + right align
         print(label + "".join(ascii_grid[r]))
+        if isLogging:                                                                           #0.4.2
+            print(label + "".join(ascii_grid[r]), file=logfile)                                 #0.4.2
 
     # x axis
     for i in range(4):
-        print("       ", end="")
+        print("        ", end="") #0.4.2 added one space (y axis labels are 1 char longer)
+        if isLogging:                                                                           #0.4.2
+            print("        ", end="", file=logfile)                                              #0.4.2
         for c in range(graph_cols):
             print(x_labels[c][i] if i < len(x_labels[c]) else " ", end="")
+            if isLogging:                                                                       #0.4.2
+                print(x_labels[c][i] if i < len(x_labels[c]) else " ", end="", file=logfile)    #0.4.2
         print()
+        if isLogging:                                                                           #0.4.2
+            print(file=logfile)                                                                 #0.4.2
+    # necessary to flush buffer to logfile at the end of the frame
+    if isLogging:                                                                               #0.4.2 
+        logfile.flush()                                                                         #0.4.2 
 # === END function definitions ===
 
 # === BEGIN one-time only part that needs functions ===
@@ -223,7 +258,7 @@ while True:
         x_labels.pop(0)
         x_labels.append(time_label.ljust(4))
 
-    render_ascii_graph()
+    render_ascii_graph(blockinfo)              #0.4.2 from render_ascii_graph():
 
     if move_graph != 0:
         shift_bins = (grid_height // 4) * move_graph # this is very relevant: shift 1/4 (not 1/3) of the screen
