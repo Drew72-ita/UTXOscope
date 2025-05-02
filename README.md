@@ -12,8 +12,15 @@ The  project runs fully locally using your own Bitcoin Core node and bitcoin-cli
 
 
 ## Core Idea
-The fundamental assumption behind UTXOscope is that the most common transaction size for retail users is a round-number fiat purchase — typically $100.
-By analyzing the frequency and distribution of UTXOs that correspond to the most typical purchase amounts (\$100, \$50 and \$200), it becomes possible to infer the historical price trend and track its movements over time.
+
+The fundamental assumption behind **UTXOscope** is that the most common transaction size for retail users is a round-number fiat purchase — typically **$100**.
+
+By analyzing the frequency and distribution of UTXOs corresponding to typical purchase amounts (**$100**, **$50**, and **$200**), it becomes possible to infer historical price trends and track their movement over time.
+
+Some UTXOs are excluded from the analysis:
+- UTXOs with `nulldata` or `nonstandard` output types (typically associated with inscriptions, runes, or other metadata).
+- UTXOs divisible by **1,000 sats** (e.g., 100,000 sats, 1,000 sats, 75,000 sats, 29,000 sats), as they appear far more frequently than expected due to human bias toward round numbers. Statistically, such outputs should represent only about 0.1% of all cases.  
+  This effect is particularly visible around the **$100,000** price level, where **$100 = 100,000 sats**.
 
 ## Features
 - No external price feed — fully self-contained analysis using blockchain data.
@@ -23,27 +30,59 @@ By analyzing the frequency and distribution of UTXOs that correspond to the most
 - Optional x-axis labeling of timestamps in: Local time, UTC, or the current block height (last 4 digits).
 - Automatic (beta) tracking of price when price movements exceed the displayed range.
 
-## Usage
-The tool connects to a local Bitcoin Core full node (bitcoin-cli) and scans recent blocks to build a heatmap of UTXO creation sizes.
+## Basic usage
+The tool connects to a local Bitcoin Core full node and scans recent blocks to build a heatmap of UTXO creation sizes.
 
-python3 UTXOscope.py
+The script works with the user able to run `bitcoin-cli` (try to launch: `bitcoin-cli getblockcount` ), no other prerequisites.
+
+`python3 UTXOscope.py`
 
 Six parameters will be asked to the user, prompts should be self-explanatory.
 
-Default parameters (hit enter at every request) are tuned for visualizing a price range around \$84,000 ± 3% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen. If you are using standard parameters, check that the first is at least compatible with current price, so with BTC real price of \$100.000 standard parameters will not work, try 100.000 ± 3%.
+Default parameters (hit enter at every request) are tuned for visualizing a price range around \$95,000 ± 3% on a standard 80x24 terminal window, starting from 70 blocks in the past to fill the screen. If you are using standard parameters, check that the first is at least compatible with current price, so with BTC real price of \$100.000 standard parameters will not work, try 100.000 ± 3%.
 
 If too few lines are available on the terminal, the program will progressively reduce the percent range. 
 
 Alternatively, it is possible to explore historical price dynamics by specifying a starting block and custom parameters.
 
+## Usage Tips
+
+To reduce the impact on system performance, you may want to run the Python script with lower priority:
+
+`nice -n 19 python3 UTXOscope.py`
+
+For longer runs, especially when connected to the node via SSH, consider running the script inside a `tmux` session. This allows the script to continue running even if the SSH connection is interrupted. You can later reattach to the session.
+
+
+## Log / Replay Feature (from v0.4.2)
+
+Running the script with `log` as a command-line argument:
+
+`python3 UTXOscope.py log`
+
+will create a log file named `log_timestamp.txt` (timestamp=`%y%m%d%H%M%S`) , which records all rendered frames in plain text.
+
+This allows you to "run and forget" the script inside a `tmux` session, and monitor its output with a simple `tail -f` on the log file.
+
+You can later replay the log by providing the filename, a delay in milliseconds between frames, and an optional starting block:
+
+`python UTXOreplay.py <logfile.txt> <delay_ms> [start_block]`
+
+**Example:**
+
+`python UTXOreplay.py log_250421134024.txt 100 893300`
+
+The block number is optional but must be present in the log.
+
+
 ## Examples
 To explore price activity on a 80x24 terminal starting from April 2nd, 2025:
 
-python3 UTXOscope.py 
+`python3 UTXOscope.py` 
 
 Entering the six parameters (requested on five separate prompts at startup):
 
-84000 5 500 3 890504 B
+`84000 5 500 3 890504 B`
 
 [![YouTube 30s demo](https://img.youtube.com/vi/meTtSqal6y8/hqdefault.jpg)](https://youtu.be/meTtSqal6y8)
 
@@ -94,4 +133,3 @@ This is an experimental tool and a very preliminary release.
 It will fail if Bitcoin Core stops or if unexpected parameters are entered by the user.
 
 Nothing harmful should happen in any case, this is just a python script calling bitcoin-cli locally and doing some calculations.
-
