@@ -1,7 +1,7 @@
 # ======================================================================
 # UTXOscope (general idea from UTXOracle, https://utxo.live/oracle/)
 # Author: Drew72-ita https://github.com/Drew72-ita/UTXOscope
-# Version: 0.420-RC3 - read README.md and CHANGELOG.md
+# Version: 0.430-RC2 - read README.md and CHANGELOG.md
 # ======================================================================
 
 import subprocess
@@ -13,7 +13,7 @@ import os
 import sys
 from datetime import datetime, timezone
 
-version = "v0.4.2.0"
+version = "v0.4.3.0 RC2"
 cols, rows = shutil.get_terminal_size()
 cols -= 1  # force one-column margin to avoid overflow
 
@@ -46,8 +46,8 @@ try:
     percent_range = float(input("+/- range to explore as percentage [default 3, min 1, max 10]: ") or "3")
     if percent_range < 1:
         percent_range = 1
-    elif percent_range > 10:
-        percent_range = 10
+    elif percent_range > 20: #mod 4 may 25, was 10
+        percent_range = 20   #mod 5 may 25, was 10
     bin_width_usd = float(input("Bin width in $ [default 250 - usually best results]: ") or "250")
     bin_width_usd = int(round(bin_width_usd / 5) * 5)
     block_count = int(input("Number of consecutive blocks to analize [default 3, min 1, max 10]: ") or "3")
@@ -123,8 +123,42 @@ def get_bin_counts(block_hash):
     bin_counts = [0] * grid_height
     current_hash = block_hash
     for _ in range(block_count):
-        block = json.loads(bitcoin_cli("getblock", current_hash, "2"))
+
+        # block = json.loads(bitcoin_cli("getblock", current_hash, "2"))     # replaced in 0.4.3 RC2 see below
+        # 0.4.3 RC2 - begin of code replacing block = json.loads(bitcoin_cli("getblock", current_hash, "2"))
+        reply = ""
+
+        for attempt in range(3):
+            reply = bitcoin_cli("getblock", current_hash, "2")
+            if reply:
+                break
+
+            print(f"bitcoin-cli returned empty response for block {current_hash} (attempt {attempt + 1}/3)")
+            time.sleep(5)
+
+        if not reply:
+            raise RuntimeError(f"Unable to retrieve block {current_hash}")
+
+        block = json.loads(reply)
+        # 0.4.3 RC2 - end of code replacing block = json.loads(bitcoin_cli("getblock", current_hash, "2"))
+
+        block_txids = {tx['txid'] for tx in block['tx']}                    # added in 0.4.3 RC1 
         for tx in block['tx']:
+            #                                                               # added in 0.4.3 RC1 
+            #
+            # exclude coinbase                                              # added in 0.4.3 RC1 
+            if 'vin' in tx and any('coinbase' in vin for vin in tx['vin']): # added in 0.4.3 RC1 
+                continue                                                    # added in 0.4.3 RC1 
+                                                                            # added in 0.4.3 RC1 
+            # esclude CPFP (child spending in the same block)               # added in 0.4.3 RC1 
+            is_child_in_block = any(                                        # added in 0.4.3 RC1 
+                vin.get('txid') in block_txids                              # added in 0.4.3 RC1 
+                for vin in tx.get('vin', [])                                # added in 0.4.3 RC1 
+            )                                                               # added in 0.4.3 RC1 
+            if is_child_in_block:                                           # added in 0.4.3 RC1 
+                continue                                                    # added in 0.4.3 RC1 
+            #                                                               # added in 0.4.3 RC1 
+            #                                                               # added in 0.4.3 RC1 
             for vout in tx['vout']:
                 spk_type = vout.get('scriptPubKey', {}).get('type', '')
                 if spk_type in ['nulldata', 'nonstandard']:
@@ -193,7 +227,7 @@ def render_ascii_graph(blockinfo):      #0.4.2 from def render_ascii_graph():
         direction_char = ">"
 
     if isLogging:                                                                                                                                   #0.4.2
-        print(f"--- block {blockinfo['height']} [{datetime.utcfromtimestamp(blockinfo['time']).strftime('%Y-%m-%d %H:%M:%S')}] UTC", file=logfile)  #0.4.2
+        print(f"--- block {blockinfo['height']} [{datetime.utcfromtimestamp(blockinfo['time']).strftime('%Y-%m-%d %H:%M:%S')}] UTC ({version})", file=logfile)  #0.4.2
 
     # y axis label with dollar or median bin marker
     for r in reversed(range(grid_height)):
@@ -207,7 +241,7 @@ def render_ascii_graph(blockinfo):      #0.4.2 from def render_ascii_graph():
     for i in range(4):
         print("        ", end="") #0.4.2 added one space (y axis labels are 1 char longer)
         if isLogging:                                                                           #0.4.2
-            print("        ", end="", file=logfile)                                              #0.4.2
+            print("        ", end="", file=logfile)                                             #0.4.2
         for c in range(graph_cols):
             print(x_labels[c][i] if i < len(x_labels[c]) else " ", end="")
             if isLogging:                                                                       #0.4.2
