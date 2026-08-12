@@ -1,7 +1,14 @@
 # Changelog
 
-## [0.4.2.0] - 2025-05-02
+## [0.4.3.0] - 2026-08-12
+- Excluded coinbase transactions from the statistics.
+- Excluded transactions spending outputs created within the same block (typically CPFP and other non-independent transactions),
+  thus removing a spurious diagonal pattern that could overlap and bias the real price signal.
+- Increased maximum allowed search range from ±10% to ±20%.
+- Log files now include the UTXOscope version in the header.
+- Added automatic retry (up to 3 attempts) when `bitcoin-cli getblock` returns an empty response, improving robustness against transient RPC failures.
 
+## [0.4.2.0] - 2025-05-02
 - Added **log** (`UTXOscope.py`) and **replay** (`UTXOreplay.py`) functionality.
 - Introduced a startup splash screen with script name and version.
 - Excluded 0.1% of UTXOs with amounts divisible by 1,000 sats (to reduce human rounding bias).
