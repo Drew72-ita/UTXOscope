@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.4.4.0] - UNRELEASED - testing now RC1
+* Added per-block destination address deduplication: only the first qualifying output to each Bitcoin address is counted.
+* Reduced spurious price signals caused by clusters of repetitive transactions to the same address, forming artificial ramp patterns.
+* Address tracking resets for each block and only considers outputs passing the existing filters and contributing to a price bin.
+
 ## [0.4.3.0] - 2026-08-12
 - Excluded coinbase transactions from the statistics.
 - Excluded transactions spending outputs created within the same block (typically CPFP and other non-independent transactions),
